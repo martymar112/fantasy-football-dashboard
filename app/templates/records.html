@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-title">League Records</div>
+<div class="page-sub">All-time highs, lows, and notable seasons</div>
+
+<div class="section-title">🔥 Highest Single-Week Scores</div>
+<table class="data-table" style="margin-bottom:40px">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Owner</th>
+            <th>Team</th>
+            <th>Score</th>
+            <th>Week</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in highest %}
+        <tr>
+            <td class="rank {% if loop.index == 1 %}gold{% endif %}">{{ loop.index }}</td>
+            <td style="font-weight:600">{{ row.display_name }}</td>
+            <td style="color:var(--muted)">{{ row.team_name }}</td>
+            <td style="color:var(--green);font-weight:600">{{ row.score }}</td>
+            <td>Week {{ row.week }}</td>
+            <td><a href="/season/{{ row.year }}" style="color:var(--blue);text-decoration:none">{{ row.year }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="section-title">🧊 Lowest Single-Week Scores</div>
+<table class="data-table" style="margin-bottom:40px">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Owner</th>
+            <th>Team</th>
+            <th>Score</th>
+            <th>Week</th>
+            <th>Year</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in lowest %}
+        <tr>
+            <td class="rank {% if loop.index == 1 %}gold{% endif %}">{{ loop.index }}</td>
+            <td style="font-weight:600">{{ row.display_name }}</td>
+            <td style="color:var(--muted)">{{ row.team_name }}</td>
+            <td style="color:var(--red);font-weight:600">{{ row.score }}</td>
+            <td>Week {{ row.week }}</td>
+            <td><a href="/season/{{ row.year }}" style="color:var(--blue);text-decoration:none">{{ row.year }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="section-title">📈 Best Seasons (by wins)</div>
+<table class="data-table" style="margin-bottom:40px">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Owner</th>
+            <th>Team</th>
+            <th>Year</th>
+            <th>Record</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in best_season %}
+        <tr>
+            <td class="rank {% if loop.index == 1 %}gold{% endif %}">{{ loop.index }}</td>
+            <td style="font-weight:600">{{ row.display_name }}</td>
+            <td style="color:var(--muted)">{{ row.team_name }}</td>
+            <td><a href="/season/{{ row.year }}" style="color:var(--blue);text-decoration:none">{{ row.year }}</a></td>
+            <td>
+                <span class="record">
+                    <span class="w">{{ row.wins }}</span>
+                    <span class="sep">-</span>
+                    <span class="l">{{ row.losses }}</span>
+                </span>
+            </td>
+            <td>{{ row.total_points }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="section-title">📉 Worst Seasons (by wins)</div>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Owner</th>
+            <th>Team</th>
+            <th>Year</th>
+            <th>Record</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in worst_season %}
+        <tr>
+            <td class="rank {% if loop.index == 1 %}gold{% endif %}">{{ loop.index }}</td>
+            <td style="font-weight:600">{{ row.display_name }}</td>
+            <td style="color:var(--muted)">{{ row.team_name }}</td>
+            <td><a href="/season/{{ row.year }}" style="color:var(--blue);text-decoration:none">{{ row.year }}</a></td>
+            <td>
+                <span class="record">
+                    <span class="w">{{ row.wins }}</span>
+                    <span class="sep">-</span>
+                    <span class="l">{{ row.losses }}</span>
+                </span>
+            </td>
+            <td>{{ row.total_points }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

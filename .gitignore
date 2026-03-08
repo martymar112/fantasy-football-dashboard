@@ -1,6 +1,23 @@
-.env
+# Python
 __pycache__/
-*.db
-*.sqlite3
-logs/
+*.pyc
+venv/
+.env
+
+# Environment variables
+.env
+*.env
+
+# Data files (PRIVATE LEAGUE DATA)
 data/
+*.csv
+*.json
+
+# Docker
+docker-compose.override.yml
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store

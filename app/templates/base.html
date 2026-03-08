@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A League of Extraordinary Men</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:       #0d0f14;
+            --surface:  #151820;
+            --card:     #1c2030;
+            --border:   #252a3a;
+            --gold:     #f5c842;
+            --gold2:    #e8a800;
+            --green:    #3ddc84;
+            --red:      #ff4d6d;
+            --blue:     #4da6ff;
+            --text:     #e8eaf0;
+            --muted:    #6b7494;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Subtle field lines background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 59px,
+                    rgba(255,255,255,0.015) 59px,
+                    rgba(255,255,255,0.015) 60px
+                );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        .site-header {
+            background: var(--surface);
+            border-bottom: 3px solid var(--gold);
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            height: 64px;
+        }
+
+        .site-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 0.08em;
+            color: var(--gold);
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .site-title span {
+            color: var(--muted);
+            font-size: 12px;
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            display: block;
+            margin-top: -4px;
+        }
+
+        nav {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        nav a {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            letter-spacing: 0.03em;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            color: var(--text);
+            background: var(--card);
+        }
+
+        nav a.active {
+            color: var(--gold);
+            background: rgba(245,200,66,0.1);
+        }
+
+        /* Main content */
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Page title */
+        .page-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 42px;
+            letter-spacing: 0.06em;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .page-sub {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--surface);
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 13px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+
+        .data-table tbody tr {
+            transition: background 0.15s;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* Rank column */
+        .rank {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            color: var(--muted);
+            width: 40px;
+        }
+
+        .rank.gold   { color: var(--gold); }
+        .rank.silver { color: #aab0c4; }
+        .rank.bronze { color: #cd7f32; }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-gold    { background: rgba(245,200,66,0.15); color: var(--gold); }
+        .badge-green   { background: rgba(61,220,132,0.15); color: var(--green); }
+        .badge-red     { background: rgba(255,77,109,0.15); color: var(--red); }
+        .badge-blue    { background: rgba(77,166,255,0.15); color: var(--blue); }
+        .badge-muted   { background: rgba(107,116,148,0.15); color: var(--muted); }
+
+        /* Win/Loss record */
+        .record { font-weight: 600; }
+        .record .w { color: var(--green); }
+        .record .sep { color: var(--muted); margin: 0 2px; }
+        .record .l { color: var(--red); }
+
+        /* Section headers */
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 0.08em;
+            color: var(--gold);
+            margin: 40px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Cards grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            letter-spacing: 0.04em;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .stat-card .sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Week links */
+        .week-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .week-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .week-link:hover {
+            color: var(--gold);
+            border-color: var(--gold);
+            background: rgba(245,200,66,0.06);
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            margin-bottom: 24px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--gold); }
+
+        /* Matchup rows */
+        .matchup-row td { vertical-align: middle; }
+        .matchup-row .vs { color: var(--muted); text-align: center; font-size: 12px; }
+        .matchup-row .winner { color: var(--green); font-weight: 600; }
+        .matchup-row .loser  { color: var(--muted); }
+
+        /* H2H matrix */
+        .matrix-wrap { overflow-x: auto; }
+        .matrix-table { border-collapse: collapse; min-width: 600px; }
+        .matrix-table th, .matrix-table td {
+            padding: 8px 12px;
+            font-size: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .matrix-table th { background: var(--surface); color: var(--muted); }
+        .matrix-table .self { background: var(--surface); }
+        .matrix-table .win  { color: var(--green); font-weight: 600; }
+        .matrix-table .loss { color: var(--red); }
+        .matrix-table .even { color: var(--muted); }
+
+        /* Year selector */
+        .year-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .year-pill {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .year-pill:hover {
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .header-inner { flex-wrap: wrap; height: auto; padding: 12px 0; gap: 12px; }
+            nav { margin-left: 0; flex-wrap: wrap; }
+            .page-title { font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+<header class="site-header">
+    <div class="header-inner">
+        <a href="/" class="site-title">
+            ⚡ A League of Extraordinary Men
+            <span>Fantasy Football · 12 Seasons</span>
+        </a>
+        <nav>
+            <a href="/">Standings</a>
+            <a href="/records">Records</a>
+            <a href="/championships">Championships</a>
+            <a href="/draft">Draft History</a>
+            <a href="/head-to-head/current">Head to Head</a>
+        </nav>
+    </div>
+</header>
+
+<main class="main">
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

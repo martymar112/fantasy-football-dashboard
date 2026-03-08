@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-title">Head to Head</div>
+<div class="page-sub">
+    {% if current_only %}
+        Current members only (2025 roster) · W-L across all seasons played together
+    {% else %}
+        All-time · W-L across all seasons including former members
+    {% endif %}
+</div>
+
+<!-- Toggle between views -->
+<div style="display:flex;gap:10px;margin-bottom:28px">
+    <a href="/head-to-head/current"
+       style="padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;
+              background:{% if current_only %}var(--gold){% else %}var(--card){% endif %};
+              color:{% if current_only %}var(--bg){% else %}var(--muted){% endif %};
+              border:1px solid {% if current_only %}var(--gold){% else %}var(--border){% endif %}">
+        Current Members
+    </a>
+    <a href="/head-to-head"
+       style="padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;
+              background:{% if not current_only %}var(--gold){% else %}var(--card){% endif %};
+              color:{% if not current_only %}var(--bg){% else %}var(--muted){% endif %};
+              border:1px solid {% if not current_only %}var(--gold){% else %}var(--border){% endif %}">
+        All Time
+    </a>
+</div>
+
+<div class="matrix-wrap">
+<table class="matrix-table">
+    <thead>
+        <tr>
+            <th style="text-align:left;min-width:130px">Owner</th>
+            {% for o in owners %}
+            <th title="{{ o }}">{{ o[:12] }}{% if o|length > 12 %}…{% endif %}</th>
+            {% endfor %}
+            <th style="background:var(--card)">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for owner_a in owners %}
+        <tr>
+            <td style="text-align:left;font-weight:600;color:var(--text);background:var(--surface)">
+                {{ owner_a[:16] }}{% if owner_a|length > 16 %}…{% endif %}
+            </td>
+            {% for owner_b in owners %}
+                {% if owner_a == owner_b %}
+                    <td class="self">—</td>
+                {% else %}
+                    {% set record = matrix[owner_a][owner_b] %}
+                    {% set w = record.wins %}
+                    {% set l = record.losses %}
+                    <td class="{% if w > l %}win{% elif l > w %}loss{% else %}even{% endif %}"
+                        title="{{ owner_a }} vs {{ owner_b }}: {{ w }}-{{ l }}">
+                        {{ w }}-{{ l }}
+                    </td>
+                {% endif %}
+            {% endfor %}
+            <td style="font-weight:600;background:var(--surface)">
+                {% set total_w = namespace(v=0) %}
+                {% set total_l = namespace(v=0) %}
+                {% for owner_b in owners %}
+                    {% if owner_a != owner_b %}
+                        {% set total_w.v = total_w.v + matrix[owner_a][owner_b].wins %}
+                        {% set total_l.v = total_l.v + matrix[owner_a][owner_b].losses %}
+                    {% endif %}
+                {% endfor %}
+                <span class="win">{{ total_w.v }}</span>-<span class="loss">{{ total_l.v }}</span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<p style="color:var(--muted);font-size:12px;margin-top:16px">
+    Green = winning record · Red = losing record · Read across each row to see that owner's record against each opponent.
+    {% if current_only %}Only includes matchups between current members across all seasons.{% endif %}
+</p>
+
+{% endblock %}

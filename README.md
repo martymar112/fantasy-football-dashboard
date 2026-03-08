@@ -1,6 +1,21 @@
-# Fantasy Football Dashboard
+# Fantasy Football League Analytics Dashboard
 
-Private fantasy league analytics platform built on Raspberry Pi using Docker.
+Private league analytics dashboard built with:
+- Python
+- Docker
+- Raspberry Pi
+- Self-hosted infrastructure
 
-## Phase 1 - Foundation
-Project structure and containerized environment setup.
+## Goals
+- Historical statistics (14 years of data)
+- Advanced league metrics
+- Head-to-head breakdowns
+- Player trend analysis
+- Private dockerized deployment
+
+## Tech Stack
+- Python
+- Pandas
+- Flask (future phase)
+- Docker
+- GitHub (sanitized public repo)

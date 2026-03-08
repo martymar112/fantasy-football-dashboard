@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/season/{{ year }}" class="back-link">← {{ year }} Season</a>
+
+<div class="page-title">Week {{ week }} · {{ year }}</div>
+<div class="page-sub">{{ scores|length }} matchups</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Home Team</th>
+            <th style="text-align:right">Score</th>
+            <th style="text-align:center;width:60px"></th>
+            <th>Score</th>
+            <th>Away Team</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in scores %}
+        <tr class="matchup-row">
+            <td class="{% if row.home_score > row.away_score %}winner{% else %}loser{% endif %}">
+                {{ row.home_team }}
+            </td>
+            <td style="text-align:right" class="{% if row.home_score > row.away_score %}winner{% else %}loser{% endif %}">
+                {{ row.home_score }}
+            </td>
+            <td class="vs">vs</td>
+            <td class="{% if row.away_score > row.home_score %}winner{% else %}loser{% endif %}">
+                {{ row.away_score }}
+            </td>
+            <td class="{% if row.away_score > row.home_score %}winner{% else %}loser{% endif %}">
+                {{ row.away_team }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

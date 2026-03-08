@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+
+<a href="/" class="back-link">← All-Time Standings</a>
+
+<div class="page-title">{{ year }} Season</div>
+<div class="page-sub">Final standings · click a week to see matchups</div>
+
+<table class="data-table" style="margin-bottom:32px">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>Owner</th>
+            <th>Record</th>
+            <th>Points</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for team in teams %}
+        <tr>
+            <td class="rank {% if loop.index == 1 %}gold{% elif loop.index == 2 %}silver{% elif loop.index == 3 %}bronze{% endif %}">
+                {{ loop.index }}
+            </td>
+            <td style="font-weight:600">{{ team.team_name }}</td>
+            <td style="color:var(--muted)">{{ team.display_name }}</td>
+            <td>
+                <span class="record">
+                    <span class="w">{{ team.wins }}</span>
+                    <span class="sep">-</span>
+                    <span class="l">{{ team.losses }}</span>
+                </span>
+            </td>
+            <td>{{ team.total_points }}</td>
+            <td>
+                {% if team.champion %}
+                    <span class="badge badge-gold">🏆 Champion</span>
+                {% elif team.made_playoffs %}
+                    <span class="badge badge-green">Playoffs</span>
+                {% else %}
+                    <span class="badge badge-muted">Out</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="section-title">Weekly Scores</div>
+<div class="week-links">
+    {% for w in weeks %}
+        <a href="/season/{{ year }}/week/{{ w }}" class="week-link">Week {{ w }}</a>
+    {% endfor %}
+</div>
+
+{% endblock %}

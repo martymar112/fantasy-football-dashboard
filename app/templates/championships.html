@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-title">Championships</div>
+<div class="page-sub">Title history and playoff appearances</div>
+
+<div class="section-title">🏆 Champion Roll</div>
+<table class="data-table" style="margin-bottom:40px">
+    <thead>
+        <tr>
+            <th>Year</th>
+            <th>Champion</th>
+            <th>Team Name</th>
+            <th>Record</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in champs %}
+        <tr>
+            <td>
+                <a href="/season/{{ row.year }}" style="color:var(--gold);text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.05em">
+                    {{ row.year }}
+                </a>
+            </td>
+            <td style="font-weight:600">
+                🏆 {{ row.display_name }}
+            </td>
+            <td style="color:var(--muted)">{{ row.team_name }}</td>
+            <td>
+                <span class="record">
+                    <span class="w">{{ row.wins }}</span>
+                    <span class="sep">-</span>
+                    <span class="l">{{ row.losses }}</span>
+                </span>
+            </td>
+            <td>{{ row.total_points }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="section-title">📊 Playoff Appearances & Titles</div>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Owner</th>
+            <th>Seasons</th>
+            <th>Playoff Appearances</th>
+            <th>Playoff %</th>
+            <th>🏆 Titles</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in playoff_counts %}
+        <tr>
+            <td class="rank {% if loop.index == 1 %}gold{% elif loop.index == 2 %}silver{% elif loop.index == 3 %}bronze{% endif %}">
+                {{ loop.index }}
+            </td>
+            <td style="font-weight:600">{{ row.display_name }}</td>
+            <td style="color:var(--muted)">{{ row.seasons }}</td>
+            <td>
+                {% if row.appearances > 0 %}
+                    <span class="badge badge-blue">{{ row.appearances }}x</span>
+                {% else %}
+                    <span style="color:var(--muted)">—</span>
+                {% endif %}
+            </td>
+            <td style="color:var(--muted)">
+                {{ (row.appearances / row.seasons * 100) | round(0) | int }}%
+            </td>
+            <td>
+                {% if row.titles > 0 %}
+                    <span class="badge badge-gold">🏆 {{ row.titles }}x</span>
+                {% else %}
+                    <span style="color:var(--muted)">—</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -20,3 +20,4 @@ Private league analytics dashboard built with:
 - Docker
 - GitHub (sanitized public repo)
 # fantasy-football-dashboard
+# Using this as a way to learn python and using the command line. I had a bunch of data and wanted to do soemthing with it. Please if you have any input i would leave to hear it. 
